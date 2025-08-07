@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐍 Online Python Compiler</h1>
+            <p>Write, compile, and run Python code instantly!</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="editor-section">
+                <div class="editor-header">
+                    <h3>Code Editor</h3>
+                    <button id="runBtn" class="run-button">▶️ Run Code</button>
+                </div>
+                <form id="codeForm">
+                    <textarea id="codeEditor" name="code" placeholder="# Write your Python code here
+print('Hello, World!')
+
+# Example: Calculate factorial
+def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+number = 5
+result = factorial(number)
+print(f'Factorial of {number} is: {result}')"></textarea>
+                </form>
+            </div>
+            
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>Output</h3>
+                    <button id="clearBtn" class="clear-button">🗑️ Clear</button>
+                </div>
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <span>Running code...</span>
+                </div>
+                <pre id="output" class="output-content">Ready to run your Python code!</pre>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Built with ❤️ using FastAPI | 
+            <a href="/docs" target="_blank">API Documentation</a></p>
+        </footer>
+    </div>
+    
+    <script src="{{ url_for('static', path='/script.js') }}"></script>
+</body>
+</html>
