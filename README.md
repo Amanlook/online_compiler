@@ -41,11 +41,8 @@ open http://localhost:8888
 - **Output display** with success/error indication
 - **Simple and clean interface** with responsive design
 - **Keyboard shortcuts** (Ctrl+Enter / Cmd+Enter to run code)
-- **Example code** included in the editor
 - **API endpoints** for programmatic access
 - **Built with FastAPI** for high performance
-- **Docker support** for easy deployment
-- **Security timeouts** to prevent infinite loops
 
 ## 🛠️ Tech Stack
 
@@ -53,8 +50,6 @@ open http://localhost:8888
 - **Frontend**: HTML5, CSS3, JavaScript
 - **Editor**: CodeMirror with Python syntax highlighting
 - **Environment**: UV for package management
-- **Containerization**: Docker & Docker Compose
-- **Documentation**: Comprehensive guides and API docs
 
 ## 📦 Project Structure
 
