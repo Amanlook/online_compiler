@@ -9,21 +9,11 @@ A modern, web-based Python compiler built with FastAPI that allows users to writ
 git clone <repository-url>
 cd online_compiler
 
-# Quick start with startup script
-./start.sh
 
 # Access the application
 open http://localhost:8888
 ```
 
-## 📚 Documentation
-
-| Document | Description |
-|----------|-------------|
-| **[📖 DOCUMENTATION.md](./DOCUMENTATION.md)** | Complete technical documentation and architecture guide |
-| **[🔧 API_REFERENCE.md](./API_REFERENCE.md)** | Detailed API documentation with examples |
-| **[🚀 DEPLOYMENT.md](./DEPLOYMENT.md)** | Comprehensive deployment guide for various platforms |
-| **[📝 CHANGELOG.md](./CHANGELOG.md)** | Version history and planned features |
 
 ## ✨ Features
 
@@ -76,12 +66,7 @@ online_compiler/
 ├── 📁 static/                # Static assets
 │   ├── style.css             # Styling
 │   └── script.js             # Frontend logic
-├── 📁 examples/              # Sample Python code
-├── 🐳 Dockerfile             # Container configuration
-├── 🐳 docker-compose.yml     # Multi-container setup
 ├── 📋 pyproject.toml         # Project configuration
-├── 🚀 start.sh               # Quick startup script
-└── 📚 Documentation/         # Complete docs
 ```
 
 ## Setup
@@ -103,13 +88,6 @@ online_compiler/
    ```
 
 ## Running the Application
-
-### Option 1: Using the startup script (Recommended)
-```bash
-./start.sh
-```
-
-### Option 2: Manual setup
 ```bash
 # Activate virtual environment
 source .venv/bin/activate
@@ -124,15 +102,6 @@ source .venv/bin/activate
 uvicorn main:app --reload --host 0.0.0.0 --port 8888
 ```
 
-### Option 4: Using Docker
-```bash
-# Build and run with Docker Compose
-docker-compose up --build
-
-# Or build and run manually
-docker build -t python-compiler .
-docker run -p 8888:8888 python-compiler
-```
 
 Then open your browser and navigate to `http://localhost:8888`
 
@@ -142,15 +111,6 @@ Then open your browser and navigate to `http://localhost:8888`
 - `POST /compile` - Execute Python code
 - `GET /docs` - FastAPI automatic documentation
 
-## Testing
-
-Run the test script to verify the compiler is working:
-
-```bash
-# Make sure the server is running first, then in another terminal:
-source .venv/bin/activate
-uv pip install requests  # Install requests for testing
-```
 
 ## Security Note
 
