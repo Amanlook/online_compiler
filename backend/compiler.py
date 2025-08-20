@@ -1,5 +1,7 @@
 """
 Secure Python code compiler/executor using Docker containers
+This module provides functionality to execute Python code securely in isolated Docker containers.
+It handles code execution, output processing, and security restrictions to prevent unauthorized access.
 """
 
 import tempfile
