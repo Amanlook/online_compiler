@@ -53,6 +53,13 @@ header p {
     margin-bottom: 20px;
 }
 
+/* Right Panel for Analysis and Output */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 /* Editor Section */
 .editor-section {
     background: white;
@@ -73,6 +80,47 @@ header p {
 
 .editor-header h3 {
     font-size: 1.3em;
+}
+
+.editor-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.analyze-button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.analyze-button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.smart-run-button {
+    background: #9b59b6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.smart-run-button:hover {
+    background: #8e44ad;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
 }
 
 .run-button {
@@ -132,6 +180,145 @@ header p {
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    flex: 1;
+}
+
+/* Analysis Section */
+.analysis-section {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.analysis-header {
+    background: #16a085;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.analysis-header h3 {
+    font-size: 1.3em;
+}
+
+.analysis-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.analysis-status.safe {
+    background: #27ae60;
+    color: white;
+}
+
+.analysis-status.warning {
+    background: #f39c12;
+    color: white;
+}
+
+.analysis-status.danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.analysis-results {
+    padding: 15px;
+    overflow-y: auto;
+    flex: 1;
+    max-height: 300px;
+}
+
+.analysis-placeholder {
+    color: #6c757d;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.issue-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 4px solid;
+}
+
+.issue-item.error {
+    background: #ffeaea;
+    border-left-color: #e74c3c;
+}
+
+.issue-item.warning {
+    background: #fff3cd;
+    border-left-color: #f39c12;
+}
+
+.issue-item.info {
+    background: #e7f3ff;
+    border-left-color: #3498db;
+}
+
+.issue-type {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
+
+.issue-description {
+    margin-bottom: 5px;
+}
+
+.suggestions-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+.suggestions-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.suggestion-item {
+    background: #f8f9fa;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    border-left: 3px solid #3498db;
+}
+
+.fixed-code-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+.fixed-code-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.fixed-code {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 10px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    white-space: pre-wrap;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .output-header {
@@ -245,6 +432,14 @@ footer a:hover {
         gap: 15px;
     }
     
+    .right-panel {
+        order: 2;
+    }
+    
+    .editor-section {
+        order: 1;
+    }
+    
     header h1 {
         font-size: 2em;
     }
@@ -257,15 +452,24 @@ footer a:hover {
         padding: 15px;
     }
     
-    .editor-header, .output-header {
+    .editor-header, .output-header, .analysis-header {
         flex-direction: column;
         gap: 10px;
         text-align: center;
     }
     
+    .editor-controls {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
     .CodeMirror, #codeEditor, .output-content {
         height: 300px;
         min-height: 300px;
+    }
+    
+    .analysis-section {
+        max-height: 250px;
     }
 }
 

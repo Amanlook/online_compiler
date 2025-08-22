@@ -21,7 +21,11 @@
             <div class="editor-section">
                 <div class="editor-header">
                     <h3>Code Editor</h3>
-                    <button id="runBtn" class="run-button">▶️ Run Code</button>
+                    <div class="editor-controls">
+                        <button id="analyzeBtn" class="analyze-button">🔍 Analyze</button>
+                        <button id="runBtn" class="run-button">▶️ Run Code</button>
+                        <button id="smartRunBtn" class="smart-run-button">🧠 Smart Run</button>
+                    </div>
                 </div>
                 <form id="codeForm">
                     <textarea id="codeEditor" name="code" placeholder="# Write your Python code here
@@ -39,16 +43,34 @@ print(f'Factorial of {number} is: {result}')"></textarea>
                 </form>
             </div>
             
-            <div class="output-section">
-                <div class="output-header">
-                    <h3>Output</h3>
-                    <button id="clearBtn" class="clear-button">🗑️ Clear</button>
+            <div class="right-panel">
+                <div class="analysis-section">
+                    <div class="analysis-header">
+                        <h3>Code Analysis</h3>
+                        <div id="analysisStatus" class="analysis-status"></div>
+                    </div>
+                    <div id="analysisLoading" class="loading hidden">
+                        <div class="spinner"></div>
+                        <span>Analyzing code...</span>
+                    </div>
+                    <div id="analysisResults" class="analysis-results">
+                        <div class="analysis-placeholder">
+                            Click "Analyze" to check your code for security issues, syntax errors, and get improvement suggestions.
+                        </div>
+                    </div>
                 </div>
-                <div id="loading" class="loading hidden">
-                    <div class="spinner"></div>
-                    <span>Running code...</span>
+                
+                <div class="output-section">
+                    <div class="output-header">
+                        <h3>Output</h3>
+                        <button id="clearBtn" class="clear-button">🗑️ Clear</button>
+                    </div>
+                    <div id="loading" class="loading hidden">
+                        <div class="spinner"></div>
+                        <span>Running code...</span>
+                    </div>
+                    <pre id="output" class="output-content">Ready to run your Python code!</pre>
                 </div>
-                <pre id="output" class="output-content">Ready to run your Python code!</pre>
             </div>
         </div>
         

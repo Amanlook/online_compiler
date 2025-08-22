@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 
-from .routes import home, compile_code, health_check
+from .routes import home, compile_code, analyze_code, analyze_and_compile, health_check
 
 
 def create_app() -> FastAPI:
@@ -28,6 +28,8 @@ def create_app() -> FastAPI:
     # Add routes
     app.get("/", response_class=HTMLResponse)(home)
     app.post("/compile")(compile_code)
+    app.post("/analyze")(analyze_code)
+    app.post("/analyze-and-compile")(analyze_and_compile)
     app.get("/health")(health_check)
 
     return app
