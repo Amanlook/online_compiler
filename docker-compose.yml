@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  online-compiler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: online-python-compiler
+    privileged: true  # Required for Docker-in-Docker
+    ports:
+      - "8888:8888"
+    volumes:
+      # Volume for Docker daemon state persistence
+      - docker-data:/var/lib/docker
+      # Optional: Mount logs directory for easier debugging
+      - ./logs:/var/log/supervisor
+    environment:
+      # Application configuration
+      - HOST=0.0.0.0
+      - PORT=8888
+      - DEBUG=false
+      # Docker configuration
+      - DOCKER_IMAGE=python:3.11-alpine
+      - TIMEOUT=10
+      - MEMORY_LIMIT=128m
+      - CPU_LIMIT=0.5
+      # Security configuration
+      - MAX_OUTPUT_SIZE=1048576  # 1MB
+      - TEMP_DIR_SIZE=10m
+      # LLM configuration (add your API keys as needed)
+      - LLM_PROVIDER=perplexity
+      # - PERPLEXITY_API_KEY=your_api_key_here
+      # - OPENAI_API_KEY=your_api_key_here
+      # - ANTHROPIC_API_KEY=your_api_key_here
+      - LLM_MODEL=llama-3.1-sonar-small-128k-online
+      - LLM_MAX_TOKENS=1000
+      - LLM_TIMEOUT=10
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    # Resource limits for the container itself
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  # Optional: Add a monitoring service
+  # watchtower:
+  #   image: containrrr/watchtower
+  #   container_name: watchtower
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   command: --interval 30 --cleanup online-python-compiler
+  #   restart: unless-stopped
+
+volumes:
+  docker-data:
+    driver: local
+
+networks:
+  default:
+    driver: bridge
