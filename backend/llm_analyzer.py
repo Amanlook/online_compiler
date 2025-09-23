@@ -7,15 +7,18 @@ import ast
 import aiohttp
 from typing import Dict, Any
 import logging
+from dotenv import load_dotenv
 
 from .config import (
     LLM_PROVIDER,
-    PERPLEXITY_API_KEY,
-    PERPLEXITY_BASE_URL,
+    GITHUB_TOKEN,
     LLM_MODEL,
     LLM_MAX_TOKENS,
     LLM_TIMEOUT
 )
+
+# Load environment variables
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +31,14 @@ class LLMCodeAnalyzer:
         self.model = LLM_MODEL
         self.max_tokens = LLM_MAX_TOKENS
         self.timeout = LLM_TIMEOUT
+        
+        # Setup GitHub Models API
+        if GITHUB_TOKEN:
+            self.github_token = GITHUB_TOKEN
+            self.github_base_url = 'https://models.inference.ai.azure.com'
+        else:
+            self.github_token = None
+            self.github_base_url = None
         
     async def analyze_code(self, code: str) -> Dict[str, Any]:
         """
@@ -151,8 +162,8 @@ class LLMCodeAnalyzer:
     async def _get_llm_analysis(self, code: str) -> Dict[str, Any]:
         """Get analysis from LLM provider"""
         try:
-            if self.provider == "perplexity":
-                return await self._analyze_with_perplexity(code)
+            if self.provider == "github" or self.provider == "perplexity":  # Default to GitHub Models
+                return await self._analyze_with_github_models(code)
             elif self.provider == "openai":
                 return self._analyze_with_openai(code)
             elif self.provider == "anthropic":
@@ -160,8 +171,8 @@ class LLMCodeAnalyzer:
             elif self.provider == "ollama":
                 return self._analyze_with_ollama(code)
             else:
-                logger.warning(f"Unknown LLM provider: {self.provider}")
-                return {"is_safe": True, "suggestions": [], "security_issues": []}
+                logger.warning(f"Unknown LLM provider: {self.provider}, defaulting to GitHub Models")
+                return await self._analyze_with_github_models(code)
                 
         except Exception as e:
             logger.error(f"LLM analysis failed: {str(e)}")
@@ -171,15 +182,15 @@ class LLMCodeAnalyzer:
                 "security_issues": []
             }
     
-    async def _analyze_with_perplexity(self, code: str) -> Dict[str, Any]:
-        """Analyze code using Perplexity API"""
-        if not PERPLEXITY_API_KEY:
-            return {"is_safe": True, "suggestions": ["Perplexity API key not configured"], "security_issues": []}
+    async def _analyze_with_github_models(self, code: str) -> Dict[str, Any]:
+        """Analyze code using GitHub Models API"""
+        if not self.github_token:
+            return {"is_safe": True, "suggestions": ["GitHub Models API not configured"], "security_issues": []}
         
         prompt = self._create_analysis_prompt(code)
         
         headers = {
-            "Authorization": f"Bearer {PERPLEXITY_API_KEY}",
+            "Authorization": f"Bearer {self.github_token}",
             "Content-Type": "application/json"
         }
         
@@ -199,17 +210,22 @@ class LLMCodeAnalyzer:
             "temperature": 0.1
         }
         
-        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.timeout)) as session:
-            async with session.post(f"{PERPLEXITY_BASE_URL}/chat/completions", 
-                                   headers=headers, json=payload) as response:
-                if response.status == 200:
-                    data = await response.json()
-                    content = data["choices"][0]["message"]["content"]
-                    return self._parse_llm_response(content)
-                else:
-                    error_text = await response.text()
-                    logger.error(f"Perplexity API error: {response.status} - {error_text}")
-                    return {"is_safe": True, "suggestions": ["LLM analysis failed"], "security_issues": []}
+        try:
+            async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.timeout)) as session:
+                async with session.post(f"{self.github_base_url}/chat/completions", 
+                                       headers=headers, json=payload) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        content = data["choices"][0]["message"]["content"]
+                        return self._parse_llm_response(content)
+                    else:
+                        error_text = await response.text()
+                        logger.error(f"GitHub Models API error: {response.status} - {error_text}")
+                        return {"is_safe": True, "suggestions": ["GitHub Models analysis failed"], "security_issues": []}
+                        
+        except Exception as e:
+            logger.error(f"GitHub Models API error: {str(e)}")
+            return {"is_safe": True, "suggestions": ["GitHub Models analysis failed"], "security_issues": []}
     
     def _analyze_with_openai(self, code: str) -> Dict[str, Any]:
         """Analyze code using OpenAI API"""
