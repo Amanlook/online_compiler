@@ -59,7 +59,7 @@ You can customize the application behavior using environment variables:
 
 #### Application Settings
 - `HOST`: Server host (default: `0.0.0.0`)
-- `PORT`: Server port (default: `8888`)
+- `PORT`: Server port (default: `8000`)
 - `DEBUG`: Debug mode (default: `false`)
 
 #### Docker Execution Settings
